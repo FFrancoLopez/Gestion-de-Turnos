@@ -1,11 +1,11 @@
 import express from 'express';
-import { getAllAppointments, getAppointmentById, scheduleAppointment, cancelAppointment } from '../controllers/appointmentController';
+import { getAppointments, getAppointment, scheduleAppointment, cancelAppointmentById } from '../controllers/appointmentController';
 
 const router = express.Router();
 
-router.get('/', getAllAppointments);
-router.get('/:id', getAppointmentById);
+router.get('/', getAppointments);
+router.get('/:id', getAppointment);
 router.post('/schedule', scheduleAppointment);
-router.put('/cancel', cancelAppointment);
+router.put('/cancel', cancelAppointmentById);
 
 export default router;

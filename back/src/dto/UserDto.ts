@@ -2,9 +2,11 @@ import ICredential from "../interfaces/ICredential"
 
 interface IUserData {
     id: number,
-    credential: ICredential,
+    name: string,
     email: string,
-    imagen: string
+    birthdate: string,
+    nDni: number,
+    credentialsId: ICredential,
 }
 
 export default IUserData;
