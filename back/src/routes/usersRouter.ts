@@ -1,12 +1,13 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { getUsers, getUser, registerUser, loginUser } from '../controllers/userController';
+import { ILoginUserDto, IUserDto } from "../dto/UserDto";
 
 
 const router: Router = Router();
 
-router.get('/', getUsers);
-router.get('/:id', getUser);
-router.post('/register', registerUser);
-router.post('/login', loginUser);
+router.get('/', (req: Request, res: Response) => getUsers(req, res));
+router.get('/:id', (req: Request < {id: string} >, res: Response) => getUser(req, res));
+router.post('/register', (req: Request < unknown, unknown, IUserDto >, res: Response) => registerUser(req, res));
+router.post('/login', (req: Request < unknown, unknown, ILoginUserDto >, res: Response) => loginUser(req, res));
 
 export default router;

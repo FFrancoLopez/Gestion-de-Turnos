@@ -1,6 +1,6 @@
 import ICredential from "../interfaces/ICredential"
 
-interface IUserData {
+export interface IUserDto {
     id: number,
     name: string,
     email: string,
@@ -9,4 +9,8 @@ interface IUserData {
     credentialsId: ICredential,
 }
 
-export default IUserData;
+export interface ILoginUserDto {
+    id: number,
+    userName: string,
+    password: string
+}

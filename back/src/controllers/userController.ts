@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {getAllUsers, getUserById, createUser} from "../services/usersService"
 import { validateCredential } from "../services/credentialsService"
+import { ILoginUserDto, IUserDto } from "../dto/UserDto";
 // import IUser from "../interfaces/IUser";
 
 
@@ -11,7 +12,7 @@ export const getUsers = (req: Request, res: Response): void => {
   };
   
   // Obtenemos los detalles de un usuario especifico.
-  export const getUser = (req: Request, res: Response): void => {
+  export const getUser = (req: Request < {id: string} >, res: Response): void => {
     const userId = parseInt(req.params.id);
     const user = getUserById(userId);
     if (user) {
@@ -22,19 +23,19 @@ export const getUsers = (req: Request, res: Response): void => {
   };
   
   // Registramos un nuevo usuario.
-  export const registerUser = (req: Request, res: Response):void => {
-    const {name, email, birthdate, nDni, userName, password} = req.body;
+  export const registerUser = (req: Request < unknown, unknown, IUserDto >, res: Response):void => {
+    const {name, email, birthdate, nDni, credentialsId: ICredential} = req.body;
     
-    if (!name || !email || !birthdate || !nDni || !userName || !password) {
+    if (!name || !email || !birthdate || !nDni || !ICredential.userName || !ICredential.password) {
       
       res.status(400).json({ message: 'Faltan datos para el registro' });
     }
-    const newUser = createUser(name, email, new Date(birthdate), nDni, userName, password);
+    const newUser = createUser(name, email, new Date(birthdate), nDni, ICredential.userName, ICredential.password);
     res.status(201).json(newUser);  
   };
   
   // Login del usuario a la aplicacion web.
-  export const loginUser = (req: Request, res: Response): void => {
+  export const loginUser = (req: Request < unknown, unknown, ILoginUserDto >, res: Response): void => {
     const {userName, password} = req.body;
     const credentialId = validateCredential(userName, password);
     if (credentialId !== null) {

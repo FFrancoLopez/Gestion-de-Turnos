@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {getAllAppointments, getAppointmentById, createAppointment, cancelAppointment} from "../services/appointmentsService";
+import { AppointmentScheduleDto } from '../dto/AppointmentDto';
 
 
 // Obtenemos el listado de todos los turnos.
@@ -9,7 +10,7 @@ export const getAppointments = (req: Request, res: Response): void => {
 };
 
 // Obtenemos los detalles de un turno especifico.
-export const getAppointment = (req: Request, res: Response): void => {
+export const getAppointment = (req: Request <{id: string}>, res: Response): void => {
   const appointmentId = parseInt(req.params.id);
   const appointment = getAppointmentById(appointmentId);
   if (appointment) {
@@ -22,7 +23,7 @@ export const getAppointment = (req: Request, res: Response): void => {
 };
 
 // Agendamos un nuevo turno.
-export const scheduleAppointment = (req: Request, res: Response): void => {
+export const scheduleAppointment = (req: Request < unknown, unknown, AppointmentScheduleDto>, res: Response): void => {
   const {date, hour, userId} = req.body;
   if(!date || !hour || !userId) {
 
@@ -33,7 +34,7 @@ export const scheduleAppointment = (req: Request, res: Response): void => {
 };
 
 // Cambiamos el estado de un turno a “cancelled”.
-export const cancelAppointmentById = (req: Request, res: Response): void => {
+export const cancelAppointmentById = (req: Request <{id: string}>, res: Response): void => {
   const appointmentId = parseInt(req.body.id);
   const appointment = cancelAppointment(appointmentId);
   if (appointment) {
