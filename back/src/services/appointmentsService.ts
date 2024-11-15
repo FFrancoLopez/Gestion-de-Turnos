@@ -1,24 +1,25 @@
-import Appointment from '../interfaces/IAppointment';
+import { AppointmentScheduleDto } from '../dto/AppointmentDto';
+import {IAppointment, Status} from '../interfaces/IAppointment';
 
-const appointments: Appointment[] = [];
+const appointments: IAppointment[] = [];
 let appointmentIdCounter = 1;
 
 // Retornamos el arreglo de turnos.
-export const getAllAppointments = (): Appointment[] => {
+export const getAllAppointments = (): IAppointment[] => {
     return appointments;
 }
 
 // Retornamos el tuno por ID.
-export const getAppointmentById = (id: number): Appointment | undefined => {
+export const getAppointmentById = (id: number): IAppointment | undefined => {
     return appointments.find(app => app.id === id);
 }
 
 // Creamos un turno y lo agregamos al array.
-export const createAppointment = (date: Date, hour: Date, userId: number): Appointment | null => {
+export const createAppointment = (appointment: AppointmentScheduleDto): IAppointment | null => {
   
      // No se creará un turno sin recibir un usuario.
-    if (!userId) return null;
-    const newAppointment: Appointment = { id: appointmentIdCounter++, date, hour, userId, state: "active" };
+    if (!appointment) return null;
+    const newAppointment: IAppointment = { id: appointmentIdCounter++, date: appointment.date, hour: appointment.hour, userId: appointment.userId, state: Status.Active };
     appointments.push(newAppointment);
     return newAppointment;
 }
@@ -27,7 +28,7 @@ export const createAppointment = (date: Date, hour: Date, userId: number): Appoi
 export const cancelAppointment = (id: number): boolean => {
     const appointment = getAppointmentById(id);
     if (appointment) {
-        appointment.state = "cancelled";
+        appointment.state = Status.Cancelled;
         return true;
     }
     return false;

@@ -24,13 +24,14 @@ export const getUsers = (req: Request, res: Response): void => {
   
   // Registramos un nuevo usuario.
   export const registerUser = (req: Request < unknown, unknown, IUserDto >, res: Response):void => {
-    const {name, email, birthdate, nDni, credentialsId: ICredential} = req.body;
     
-    if (!name || !email || !birthdate || !nDni || !ICredential.userName || !ICredential.password) {
+    const {name, email, birthdate, nDni, userName, password} = req.body;
+    
+    if (!name || !email || !birthdate || !nDni || !userName || !password) {
       
       res.status(400).json({ message: 'Faltan datos para el registro' });
     }
-    const newUser = createUser(name, email, new Date(birthdate), nDni, ICredential.userName, ICredential.password);
+    const newUser = createUser(req.body);
     res.status(201).json(newUser);  
   };
   

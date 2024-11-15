@@ -1,16 +1,14 @@
-import ICredential from "../interfaces/ICredential"
 
 export interface IUserDto {
-    id: number,
     name: string,
     email: string,
-    birthdate: string,
+    birthdate: Date,
     nDni: number,
-    credentialsId: ICredential,
+    userName: string,
+    password: string
 }
 
 export interface ILoginUserDto {
-    id: number,
     userName: string,
     password: string
 }

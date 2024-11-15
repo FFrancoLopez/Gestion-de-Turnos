@@ -1,9 +1,12 @@
-interface IAppointment {
+export interface IAppointment {
     id: number,
     date: Date,
-    hour: Date,
+    hour: string,
     userId: number,
-    state: "active" | "cancelled"
+    state: Status
 }
 
-export default IAppointment;
+export enum Status {
+    "Active" = "active",
+    "Cancelled" = "cancelled"
+}

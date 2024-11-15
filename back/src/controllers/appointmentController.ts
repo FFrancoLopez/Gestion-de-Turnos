@@ -29,7 +29,7 @@ export const scheduleAppointment = (req: Request < unknown, unknown, Appointment
 
     res.status(400).json({message: 'Faltan datos para agendar el turno.'});
   }
-  const newAppointment = createAppointment (new Date(date), hour, userId);
+  const newAppointment = createAppointment (req.body);
   res.status(201).json(newAppointment);
 };
 

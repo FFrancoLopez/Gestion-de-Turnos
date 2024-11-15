@@ -1,12 +1,6 @@
 export interface AppointmentScheduleDto {
-    id : number,
     date : Date,
-    hour: Date,
-    userId: number,
-    state: Status.Active
+    hour: string,
+    userId: number
 }
 
-export enum Status {
-    "Active" = "active",
-    "Cancelled" = "cancelled"
-}

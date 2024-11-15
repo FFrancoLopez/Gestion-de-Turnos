@@ -1,4 +1,3 @@
-import ICredential from "./ICredential"
 
 interface IUser {
     id: number,
@@ -6,7 +5,7 @@ interface IUser {
     email: string,
     birthdate: Date,
     nDni: number,
-    credentialsId: ICredential,
+    credentialsId: number
     
 }
 export default IUser;
