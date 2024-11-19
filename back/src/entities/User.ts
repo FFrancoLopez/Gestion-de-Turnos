@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
 import { Credential } from "./Credential"
 import { Appointment } from "./Appointment"
 
@@ -9,19 +9,23 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({
-        length:100
-    })
+    @Column({ type: "varchar", length:100, nullable: false })
     name: string
 
-    @Column()
+    @Column({ type: "varchar", length:100, unique:true, nullable: false })
     email: string
 
-    @Column({type: "date", unique: true})
+    @Column({type: "date", unique: true, nullable: false})
     birthdate: Date
 
-    @Column("integer")
+    @Column( {type: "integer", nullable: false, unique: true})
     DNI: number
+
+    @CreateDateColumn()
+  createdAt?: Date
+
+  @CreateDateColumn()
+  updateAt?: Date
 
     // Releacion de 1 a varios (1:N)
     @OneToMany(() => Appointment, (appointment) => appointment.user)

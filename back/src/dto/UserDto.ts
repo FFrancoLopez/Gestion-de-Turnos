@@ -9,6 +9,7 @@ export interface IUserDto {
 }
 
 export interface ILoginUserDto {
+    login: true,
     userName: string,
     password: string
 }
