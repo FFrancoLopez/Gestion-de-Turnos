@@ -4,19 +4,25 @@ import { AppointmentScheduleDto } from '../dto/AppointmentDto';
 
 
 // Obtenemos el listado de todos los turnos.
-export const getAppointments = async(req: Request, res: Response): Promise<void> => {
+export const getAppointments = async (req: Request, res: Response): Promise<void> => {
   try {
-    const appointments = getAllAppointmentsService();
-    res.json(appointments);
-
-  }catch(error){
-    console.error('Error al obtener los turnos:', error);
-    res.status(500).json({ message: 'No se pudieron obtener los turnos. Por favor, inténtelo más tarde.' });
+    // Esperar la respuesta del servicio
+    const appointments = await getAllAppointmentsService();
+    res.status(200).json(appointments); // Enviar los turnos con un estado 200 OK
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error al obtener los turnos:', error.message);
+      res.status(404).json({ message: 'No se pudieron obtener los turnos. Por favor, inténtelo más tarde.' });
+    } else {
+      console.error('Error desconocido al obtener los turnos:', error);
+      res.status(404).json({ message: 'Ocurrió un error inesperado. Por favor, inténtelo más tarde.' });
+    }
   }
 };
 
+
 // Obtenemos los detalles de un turno especifico.
-export const getAppointment = async(req: Request <{id: string}>, res: Response): Promise<void> => {
+export const getAppointmentById = async(req: Request <{id: string}>, res: Response): Promise<void> => {
   const appointmentId = parseInt(req.params.id);
   if (isNaN(appointmentId)) {
     res.status(400).json({ message: 'El ID del turno debe ser un número válido.' });
@@ -37,45 +43,72 @@ export const getAppointment = async(req: Request <{id: string}>, res: Response):
   }
 };
 
-// Agendamos un nuevo turno.
-export const scheduleAppointment = async(req: Request < unknown, unknown, AppointmentScheduleDto>, res: Response): Promise<void> => {
-  const {date, hour, userId} = req.body;
-
-  if(!date || !hour || !userId) {
-
-    res.status(400).json({message: 'Faltan datos para agendar el turno.'});
-    return
-  }
+export const scheduleAppointment = async ( req: Request<unknown, unknown, AppointmentScheduleDto>, res: Response): Promise<void> => {
   try {
-    const newAppointment = createAppointmentService (req.body);
-    res.status(201).json(newAppointment);
+    const { date, hour, userId } = req.body;
 
-  }catch(error) {
-    console.error('Error al agendar el turno:', error);
-    res.status(500).json({message: 'No se pudo agendar el turno. Por favor, inténtelo más tarde.'})
+    // Validación inicial de datos
+    if (!date || !hour || !userId) {
+      res.status(400).json({ message: 'Faltan datos para agendar el turno.' });
+      return;
+    }
+
+    // Llamar al servicio para crear el turno
+    const appointment = await createAppointmentService(req.body);
+    res.status(201).json({ message: 'Turno creado exitosamente.', appointment });
+
+  } catch (error) {
+    // Manejar errores específicos
+    const err = error as Error;
+    if (err.message.includes('usuario con ID')) {
+      res.status(404).json({ message: err.message });
+    } else if (err.message.includes('Faltan datos')) {
+      res.status(400).json({ message: err.message });
+    } else {
+      // Errores generales del servidor
+      console.error('Error interno al agendar el turno:', error);
+      res.status(500).json({ message: 'No se pudo agendar el turno. Por favor, inténtelo más tarde.' });
+    }
   }
 };
 
-// Cambiamos el estado de un turno a “cancelled”.
-export const cancelAppointmentById = async(req: Request <{id: string}>, res: Response): Promise<void> => {
-  const appointmentId = parseInt(req.body.id);
+// CANCELACIÓN DE TURNO: Cambiamos el estado de un turno a “cancelled”.
+export const cancelAppointmentById = async ( req: Request<{ id: string }>, res: Response): Promise<void> => {
+  const appointmentId = parseInt(req.body.id); // Usar params en lugar de body para ID
 
-  if (isNaN(appointmentId)) {
+  if (!appointmentId) {    
+
     res.status(400).json({ message: 'El ID del turno debe ser un número válido.' });
     return;
   }
-  try{
+
+  try {
     const appointmentSuccess = await cancelAppointmentService(appointmentId);
+
     if (appointmentSuccess) {
-      res.json({message: 'Turno cancelado exitosamente.'});
+      res.status(200).json({ message: 'Turno cancelado exitosamente.' });
 
-    }else{
-      res.status(404).json({message: 'Turno no encontrado'});
+    } else {
+
+      res.status(404).json({ message: 'No se pudo cancelar el turno porque no se encontró.' });
     }
+  } catch (error) {
+    if (error instanceof Error) {
 
-  }catch (error) {
-    console.error(`Error al cancelar el turno con ID ${appointmentId}:`, error);
-    res.status(500).json({ message: 'No se pudo cancelar el turno. Por favor, inténtelo más tarde.' });
+      // Manejamos errores lanzados desde el servicio
+      if (error.message.includes('No se encontró un turno')) {
+
+        res.status(404).json({ message: error.message });
+
+      } else {
+
+        res.status(404).json({ message: error.message });
+      }
+    } else {
+      // Manejamos errores desconocidos
+      console.error(`Error desconocido al cancelar el turno con ID ${appointmentId}:`, error);
+      res.status(500).json({ message: 'Error desconocido. Por favor, inténtelo más tarde.' });
+    }
   }
-
 };
+

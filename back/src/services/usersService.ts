@@ -27,7 +27,7 @@ export const getUserByIdService = async (id: number): Promise<User | null> => {
  try {
    const user: User | null = await UserModel.findOne({
       where: { id },
-      relations: ['credential', 'appointments'],
+      relations: [ 'appointments' ],
     });
 
    if (!user) {
@@ -65,21 +65,3 @@ export const createUserService = async (userDto: IUserDto): Promise<User> => {
     throw new Error("No se pudo crear el usuario.");
   }
 };
-    
-    
-    // Crear credenciales y obtener su ID
-    // const credentialId = await createCredentialService( userName, password );
-    // const credentialRepository = CredentialModel;
-    // const credential = await credentialRepository.findOneBy({ id: credentialId });
-
-
-    // Creamos usuario y asociamos su credencial.
-    // const userRepository = UserModel;
-    // const newUser = new User();
-    // newUser.name = name;
-    // newUser.email = email;
-    // newUser.birthdate = birthdate; 
-    // newUser.DNI = nDni;
-    // newUser.credential = credential;
-
-    // Guardamos usuario en la base de datos

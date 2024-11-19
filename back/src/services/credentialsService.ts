@@ -63,7 +63,7 @@ export const validateCredentialService = async (login: boolean, userName: string
 
    // Buscamos credencial por nombre de usuario.
    const credentialRepository = CredentialModel;
-   const credential = await credentialRepository.findOne({
+   const credential: Credential | null = await credentialRepository.findOne({
      where: { username: userName },
      relations: ["user"],
    });
@@ -71,9 +71,9 @@ export const validateCredentialService = async (login: boolean, userName: string
    if (!credential) {
      throw new Error(`El usuario ${userName} no fue encontrado.`);
     }
-
+    const crypPassword: string = await crypPass(password)
    // Validacion de contraseña
-   if (credential.password !== password) {
+   if (crypPassword !== crypPassword) {
     throw new Error(`La contraseña ${password} es incorrecta.`);
     // Credenciales inválidas
     }
