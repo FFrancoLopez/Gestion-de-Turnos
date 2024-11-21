@@ -1,0 +1,84 @@
+.navbarContainer {
+    display: flex;
+    justify-content: space-between; /* Logo a la izquierda, botones al centro, perfil a la derecha */
+    align-items: center;
+    margin: -0.5rem;
+    padding: 2rem 2rem 3rem; /* Espaciado interno */
+    background-color: #100707c0; /* Fondo oscuro */
+    color: #fff; /* Texto claro */
+    position: sticky; /* Navbar fija en la parte superior */
+    top: 0;
+    z-index: 1000; /* Asegura que la barra quede encima */
+}
+
+/* Estilo para el logo */
+/* .navbarLogo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+*/
+
+.navbarLogo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logoImage {
+    width: 8rem;  /* Tamaño del logo */
+    height: auto;
+    margin-right: 1.6rem;
+    transition: box-shadow 0.3s ease;
+
+}
+
+/* Contenedor de los botones */
+.navbarButtons {
+    display: flex;
+    gap: 20px; /* Espaciado entre botones */
+}
+
+/* Botones de navegación */
+.navButton {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 2px 4px 8px rgba(123, 47, 120, 0.781);
+    
+}
+
+.navButton:hover {
+    color: #91d507; /* Color destacado al pasar el cursor */
+    border-radius: 2rem;
+    background-color: #910e7790;
+    transition: all 0.3s ease;
+}
+
+/* Perfil */
+.navPerfil {
+    font-size: 1.5rem;
+    text-decoration: none; /* Sin subrayado */
+    transition: background-color 0.3s ease;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.navPerfil:hover {
+    color: #ffcc00;
+    background-color: transparent;
+    border-radius: 8rem;
+    background-color: #0e912890;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.781);
+    transition: all 0.3s ease;
+
+}

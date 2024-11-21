@@ -1,0 +1,21 @@
+.appointmentsContainer {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px; /* Espaciado entre tarjetas */
+    background-color: #f5f5f5; /* Fondo neutro */
+    justify-content: center; /* Centra las tarjetas */
+    min-height: 100vh; /* Asegura que ocupe la pantalla completa */
+}
+
+.tilteAppointmentsContainer{
+    color:  rgb(243, 237, 242);
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-shadow: 2px 3px 5px rgb(81, 7, 71);
+    background-color: rgba(137, 11, 53, 0.131);
+    border-radius: 0.5rem;
+    padding: 0.5rem 0 0.2rem 0;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.349);
+
+}

@@ -1,0 +1,77 @@
+.appointmentCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid #ccc; /* Borde ligero */
+    border-radius: 10px; /* Bordes redondeados */
+    background-color: #fff; /* Fondo blanco */
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera para el borde */
+    margin: 1rem 9rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto hover */
+.appointmentCard:hover {
+    transform: scale(1.02); /* Crece levemente */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}
+
+/* Encabezado */
+.appointmentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc; /* Línea divisoria */
+    padding-bottom: 10px;
+}
+
+/* Título del turno */
+.appointmentHeader h3 {
+    font-size: 1.4rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Estado del turno */
+.statusActive {
+    color: #28a745; /* Verde para activo */
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 0.8rem;
+    text-align: center;
+    width: fit-content;
+    margin-top: 0.5rem;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.781); 
+
+}
+
+/* Detalles */
+.appointmentDetails {
+    font-size: 16px;
+    color: #201c1c;
+}
+
+/* Botón de cancelar */
+.cancelButton {
+    align-self: flex-end; /* Botón alineado a la derecha */
+    background-color: #f7061e; /* Rojo */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: not-allowed; /* Cursor desactivado por ahora */
+    opacity: 0.9; /* Aspecto desactivado */
+    transition: opacity 0.3s ease;
+    margin-top: 0.5rem;
+    width: fit-content;
+    font-size: 0.8rem;
+    text-align: center;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.781); 
+
+}
