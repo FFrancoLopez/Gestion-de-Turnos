@@ -38,18 +38,6 @@ export const AppointmentRepository = AppDataSource.getRepository(Appointment).ex
         
     },
 
-    // validateExistingAppointment: function(userId: number, date: Date, time: string): void{
-
-    //     const appointmentFound = await this.findOne({
-    //         where: {
-    //             user: {
-    //                 id: userId
-    //             },
-    //             date: date,
-    //             hour: time
-    //         }
-    //         if(){}
-    //     })
-    // }
+    
 
 })

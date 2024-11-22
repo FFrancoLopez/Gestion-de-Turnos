@@ -18,7 +18,7 @@ export const DB_NAME: string |undefined = process.env.DB_NAME
 
 export const DB_SYNC: boolean = process.env.DB_SYNC ? process.env.DB_SYNC === "true" : true 
 
-export const DB_DROP: boolean = process.env.DB_DROP ? process.env.DB_DROP === "false" : false 
+export const DB_DROP: boolean = process.env.DB_DROP ? process.env.DB_DROP === "true" : true 
 
 export const DB_LOGGING: boolean = process.env.DB_LOGGING ? process.env.DB_LOGGING === "true" : true
 
