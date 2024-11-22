@@ -1,5 +1,6 @@
 export interface IAppointment {
     id: number,
+    description: string,
     date: Date,
     hour: string,
     userId: number,
@@ -7,6 +8,6 @@ export interface IAppointment {
 }
 
 export enum Status {
-    "Active" = "active",
-    "Cancelled" = "cancelled"
+    "Active" = "Activo",
+    "Cancelled" = "Cancelado"
 }

@@ -57,10 +57,10 @@ export const getAppointmentByIdService = async (id: number): Promise<Appointment
 
 // Creamos un turno y lo guardamos en la base de datos.
 export const createAppointmentService = async (appointmentDto: AppointmentScheduleDto): Promise<Appointment> => {
-  const { date, hour, userId } = appointmentDto;
+  const { description, date, hour, userId } = appointmentDto;
 
   // Validamos datos de entrada
-  if (!date || !hour || !userId) {
+  if (!description || !date || !hour || !userId) {
     throw new Error('Faltan datos obligatorios para crear el turno.');
   }
 
@@ -73,6 +73,7 @@ export const createAppointmentService = async (appointmentDto: AppointmentSchedu
 
     // Crear y guardar el turno
     const newAppointment = AppointmentModel.create({
+      description,
       date,
       hour,
       state: Status.Active,

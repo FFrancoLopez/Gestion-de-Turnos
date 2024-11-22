@@ -45,10 +45,10 @@ export const getAppointmentById = async(req: Request <{id: string}>, res: Respon
 
 export const scheduleAppointment = async ( req: Request<unknown, unknown, AppointmentScheduleDto>, res: Response): Promise<void> => {
   try {
-    const { date, hour, userId } = req.body;
+    const { description, date, hour, userId } = req.body;
 
     // Validación inicial de datos
-    if (!date || !hour || !userId) {
+    if ( !description || !date || !hour || !userId) {
       res.status(400).json({ message: 'Faltan datos para agendar el turno.' });
       return;
     }

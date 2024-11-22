@@ -7,6 +7,9 @@ export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ type: "varchar", length: 225, nullable: false })
+  description: string;
+
   @Column({ type: "date", nullable: false })
   date: Date;
 
