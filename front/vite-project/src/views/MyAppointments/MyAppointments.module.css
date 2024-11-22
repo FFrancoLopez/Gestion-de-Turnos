@@ -19,3 +19,13 @@
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.349);
 
 }
+
+.textNotAppointments {
+    color: rgb(243, 237, 242);
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 2px 3px 5px rgb(81, 7, 71);
+    background-color: rgba(137, 11, 53, 0.131);
+    padding: 0.5rem 0 0.2rem 0;
+}
+

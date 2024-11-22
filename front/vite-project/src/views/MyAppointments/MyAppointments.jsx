@@ -1,18 +1,34 @@
-import { useState } from "react";
-import myAppointments from "../../helpers/myAppointments";
+import { useEffect, useState } from "react";
 import Appointment from '../../components/Appointment/Appointment';
+import axios from 'axios';
 import Styles from './MyAppointments.module.css'
 
 function MyAppointments() {
 
-    // eslint-disable-next-line no-unused-vars
-    const [appointments, setAppointments] = useState(myAppointments);
+    const [appointments, setAppointments] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:3000/appointments')
+
+        .then((response) => {
+            setAppointments(response.data);
+        })
+
+        .catch((error) => {
+            console.log({message: "Error al obtener los turnos", error: error});
+        });
+
+    }, []);
+
+    useEffect(() => {
+        console.log({message: "useEffect", appointments: appointments});
+    }, [appointments]);
 
     return(
         <div className={Styles.container}>
 
             <div className={Styles.tilteAppointmentsContainer}>
-                <h1>Mis turnos</h1>
+                <h2>Mis turnos😎</h2>
             </div>
 
             <div className={Styles.appointmentsGrid}>
@@ -21,12 +37,13 @@ function MyAppointments() {
                             <Appointment
                                 key={appoinment.id}
                                 id={appoinment.id}
+                                description={appoinment.description}
                                 date={appoinment.date}
                                 hour={appoinment.hour}
-                                status={appoinment.state}
+                                state={appoinment.state}
                             />
                         ) 
-                }) : <h1>No hay turnos disponibles</h1>}
+                }) : <h3 className={Styles.textNotAppointments}>No hay turnos disponibles.😭</h3>}
                 
             </div>
             
