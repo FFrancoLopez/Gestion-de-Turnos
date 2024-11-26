@@ -4,12 +4,12 @@ export interface IUserDto {
     email: string,
     birthdate: Date,
     nDni: number,
-    userName: string,
+    username: string,
     password: string
 }
 
 export interface ILoginUserDto {
     login: true,
-    userName: string,
+    username: string,
     password: string
 }

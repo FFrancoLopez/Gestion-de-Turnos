@@ -1,95 +1,83 @@
 import { EntityManager } from "typeorm";
 import { CredentialModel } from "../config/data-source";
 import { Credential } from "../entities/Credential";
+import bcrypt from "bcrypt";
 
+// Función para cifrar la contraseña usando bcrypt.
 const crypPass = async (password: string): Promise<string> => {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(password)
-  const hash = await crypto.subtle.digest("SHA-256", data)
-  const hashArray = Array.from(new Uint8Array(hash))
-  const passCrypt = hashArray.map( b => b.toString(16).padStart(2, "0")).join("")
-  return passCrypt
+  const saltRounds = 10; // Puedes ajustar los rounds según tus necesidades
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
 };
-// export const createCredentialService: (a: string, b: string) => Promise<Credential> = async (entityManager: EntityManager,
-//   username: string, password: string): Promise<Credential> => {
-  
-  // const credentialObject = {
-  // username,
-  // password: passwordEncripted
-  
-  // const newCredential = CredentialModel.create(credentialObject)
-  // return await CredentialModel.save(newCredential)
 
 // Creamos una nueva credencial.
-export const createCredentialService: ( entityManager: EntityManager, a: string, b: string ) => Promise<Credential> = async ( entityManager: EntityManager, userName: string, password: string ): Promise<Credential> => {
- 
-  const passwordEncripted: string = await crypPass(password)
-
+export const createCredentialService: (entityManager: EntityManager, username: string, password: string) => Promise<Credential> = async (entityManager: EntityManager, username: string, password: string): Promise<Credential> => {
   try {
-    if (!userName || !password) {
+    if (!username || !password) {
       throw new Error("El nombre de usuario y la contraseña son obligatorios.");
     }
 
+    const passwordEncripted: string = await crypPass(password);
 
-    // Creamos nueva credencial.
-    // const credentialRepository = CredentialModel;
-    // const newCredential = new Credential;
-    // newCredential.username = userName;
-    // newCredential.password = passwordEncripted;
     const credentials: Credential = entityManager.create(Credential, {
-      username: userName,
+      username: username,
       password: passwordEncripted
-    })
+    });
 
-    // guardamos nueva credencial
-    return await entityManager.save(credentials)
-    
-
-  }catch (error) {
+    // Guardamos nueva credencial
+    return await entityManager.save(credentials);
+  } catch (error) {
     console.error("Error al crear la credencial:", error);
     throw new Error("No se pudo crear la credencial.");
- }
-};
-
-
-
-//  Valida credenciales por nombre de usuario y contraseña.
-export const validateCredentialService = async (login: boolean, userName: string, password: string): Promise<Credential> => {
-
- try {
-   if (!userName || !password) {
-     throw new Error("El nombre de usuario y la contraseña son obligatorios.");
-   }
-
-   // Buscamos credencial por nombre de usuario.
-   const credentialRepository = CredentialModel;
-   const credential: Credential | null = await credentialRepository.findOne({
-     where: { username: userName },
-     relations: ["user"],
-   });
-
-   if (!credential) {
-     throw new Error(`El usuario ${userName} no fue encontrado.`);
-    }
-    const crypPassword: string = await crypPass(password)
-   // Validacion de contraseña
-   if (crypPassword !== crypPassword) {
-    throw new Error(`La contraseña ${password} es incorrecta.`);
-    // Credenciales inválidas
-    }
-    return credential;
-    
-  } catch (error) {
-   console.error(`Error al validar credencial para ${userName}:`, error);
-   throw new Error("No se pudo validar la credencial.");
   }
 };
 
+// Valida credenciales por nombre de usuario y contraseña.
+export const validateCredentialService = async (username: string, password: string): Promise<Credential | null> => {
+  try {
+    // Validaciones previas
+    if (!username) {
+      throw { field: "username", message: "El nombre de usuario es obligatorio." };
+    }
+    if (!password) {
+      throw { field: "password", message: "La contraseña es obligatoria." };
+    }
 
+    // Buscamos la credencial por nombre de usuario.
+    const credentialRepository = CredentialModel;
+    const credential: Credential | null = await credentialRepository.findOne({
+      where: { username },
+      relations: ["user"],
+    });
+
+    if (!credential) {
+      throw { field: "username", message: `El usuario ${username} no fue encontrado.` };
+    }
+
+    // Comparamos la contraseña ingresada con la almacenada en la base de datos
+    const passwordMatch = await bcrypt.compare(password, credential.password);
+
+    if (!passwordMatch) {
+      throw { field: "password", message: "La contraseña es incorrecta." };
+    }
+
+    return credential; // Retornamos la credencial si las credenciales son correctas
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    
+    console.error(`Error al validar credenciales para ${username}:`, error);
+    if (error.field && error.message) {
+      throw error;
+    } else {
+      // error inesperado:
+      throw { field: "general", message: "No se pudo validar las credenciales. Intenta nuevamente." };
+    }
+  }
+};
 
 // Obtiene una credencial por ID.
 export const getCredentialByIdService = async (id: number): Promise<Credential | undefined> => {
-
   try {
     const credentialRepository = CredentialModel;
     const credential = await credentialRepository.findOneBy({ id });
@@ -98,7 +86,6 @@ export const getCredentialByIdService = async (id: number): Promise<Credential |
       throw new Error(`Credencial con ID ${id} no encontrada.`);
     }
     return credential;
-
   } catch (error) {
     console.error(`Error al obtener credencial con ID ${id}:`, error);
     throw new Error("No se pudo obtener la credencial.");

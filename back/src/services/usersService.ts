@@ -42,26 +42,47 @@ export const getUserByIdService = async (id: number): Promise<User | null> => {
 };
 
 
-// Creamos un nuevo usuario y asociamos su credencial.
+// Creamos un nuevo usuario y asociamos su credencial
 export const createUserService = async (userDto: IUserDto): Promise<User> => {
-  
-  
+  const { email, username, nDni } = userDto;
+
+  // Validaciones previas para evitar duplicados
+  const existingEmail = await UserModel.findOne({ where: { email } });
+  if (existingEmail) {
+    throw { field: "email", message: "El email ya está en uso." };
+  }
+
+  const existingUsername = await AppDataSource.getRepository(Credential).findOne({ where: { username } });
+  if (existingUsername) {
+    throw { field: "username", message: "El nombre de usuario ya está en uso." };
+  }
+
+  const existingDni = await UserModel.findOne({ where: { DNI: nDni } });
+  if (existingDni) {
+    throw { field: "nDni", message: "El DNI ya está en uso." };
+  }
+
+  // Transacción para crear usuario y asociar credenciales
   try {
     const result = await AppDataSource.transaction(async (entityManager: EntityManager) => {
-      const userCredentials: Credential = await createCredentialService(entityManager, userDto.userName, userDto.password)
+      // Crear credenciales
+      const userCredentials: Credential = await createCredentialService(entityManager, username, userDto.password);
+
+      // Crear usuario
       const newUser: User = entityManager.create(User, {
         name: userDto.name,
-        email: userDto.email,
-        birthdate: userDto.birthdate, 
-        DNI: userDto.nDni,
+        email,
+        birthdate: userDto.birthdate,
+        DNI: nDni,
         credential: userCredentials,
-      })
-      return await entityManager.save(newUser)
-    })
-    return result
-    
-  } catch (error) {
-    console.error("Error al crear el usuario:", { userDto, error });
-    throw new Error("No se pudo crear el usuario.");
+      });
+
+      return await entityManager.save(newUser);
+    });
+
+    return result;
+  } catch (err) {
+    console.error("Error al crear el usuario:", { userDto, err });
+    throw { field: "general", message: "No se pudo crear el usuario. Verifique su fecha de nacimiento e intentelo nuevamente. " };
   }
 };

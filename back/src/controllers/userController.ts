@@ -4,6 +4,7 @@ import { validateCredentialService } from "../services/credentialsService"
 import { ILoginUserDto, IUserDto } from "../dto/UserDto";
 
 
+
 // Obtemos el listado de todos los usuarios.
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -30,26 +31,29 @@ export const getUserById = async(req: Request < {id: string} >, res: Response): 
 };
   
 // Registramos un nuevo usuario.
-export const registerUser = async(req: Request < unknown, unknown, IUserDto >, res: Response): Promise<void> => {
-    
+export const registerUser = async (req: Request<unknown, unknown, IUserDto>, res: Response): Promise<void> => {
   try {
     const newUser = await createUserService(req.body);
     res.status(201).json(newUser);
-  }catch {
-    res.status(400).json({message: 'Solicitud incompleta. Usuario ya existente.'})
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(400).json({
+      status: "error",
+      message: "Error al registrar el usuario.",
+      details: err.field ? [{ field: err.field, message: err.message }] : [{ field: "general", message: "Error desconocido." }],
+    });
   }
-    
-     
 };
 
 
-// Login del usuario a la aplicacion web.
-export const loginUser = async (req: Request < unknown, unknown, ILoginUserDto >, res: Response): Promise<void> => {
-  const {login, userName, password} = req.body;
-  try{
 
-    const credential = await validateCredentialService(login, userName, password);
-    
+export const loginUser = async (req: Request<unknown, unknown, ILoginUserDto>, res: Response): Promise<void> => {
+  const { username, password } = req.body;
+
+  try {
+    // Validamos las credenciales
+    const credential = await validateCredentialService(username, password);
+
     if (credential !== null) {
       res.status(200).json({
         login: true,
@@ -61,10 +65,34 @@ export const loginUser = async (req: Request < unknown, unknown, ILoginUserDto >
           nDni: credential.user.DNI,
         },
       });
-    }  
-  }catch{
-    res.status(400).json({messange: 'Credencial incorrecta.'});
-  }
-    
+    } else {
+      // Si las credenciales no son válidas, lanzar un error genérico
+      throw { field: "username", message: "Usuario o contraseña incorrectos" };
+    }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.error("Error al intentar iniciar sesión:", error);
 
+    if (error.message.includes("incorrecta")) {
+      
+      res.status(400).json({
+        field: "password",
+        message: "La contraseña es incorrecta",
+      });
+
+    } else if (error.message.includes("no fue encontrado")) {
+
+      res.status(400).json({
+        field: "username",
+        message: "El usuario no fue encontrado",
+      });
+
+    } else {
+      // En caso de un error inesperado
+      res.status(500).json({
+        field: "general",
+        message: "Ocurrió un error inesperado. Inténtelo nuevamente más tarde.",
+      });
+    }
+  }
 };
