@@ -1,0 +1,108 @@
+/* Contenedor del formulario */
+.formContainer {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    margin: 0 33%;
+}
+
+/* Título del formulario */
+.formContainer h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilos de las etiquetas */
+.formContainer label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Estilos de los campos */
+.formContainer input[type="text"],
+.formContainer input[type="email"],
+.formContainer input[type="password"],
+.formContainer input[type="number"],
+.formContainer input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.formContainer input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Mensajes de error */
+.formContainer .errorMessage {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+/* Botón */
+.submitButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .submitButton:enabled {
+    background-color: #4caf50; /* Verde cuando está habilitado */
+    color: white;
+  }
+  
+  .submitButton:disabled {
+    background-color: #ccc; /* Gris cuando está deshabilitado */
+    color: #666;
+    cursor: not-allowed;
+  }
+  
+
+/* .formContainer button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.formContainer button:hover {
+    background-color: #0056b3;
+} */
+
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .formContainer {
+        padding: 15px;
+    }
+
+    .formContainer h1 {
+        font-size: 20px;
+    }
+
+    .formContainer button {
+        font-size: 14px;
+    }
+}

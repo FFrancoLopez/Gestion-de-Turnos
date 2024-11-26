@@ -3,6 +3,8 @@ import './App.module.css'
 import Home from './views/Home/Home'
 import styles from './App.module.css'
 import MyAppointments from './views/MyAppointments/MyAppointments'
+import Register from './views/Register/Register'
+import Login from './views/Login/Login'
 
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
         </h1>
       </header>
       <MyAppointments/>
+      <Register/>
+      <Login/>
 
     </>
   )  
