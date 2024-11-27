@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
+import PropTypes from "prop-types";
 import Styles from "./Login.module.css";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { loginFormValidates } from "../../helpers/loginFormValidates";
+import { Link } from "react-router-dom";
 
-function Login() {
+function Login({onLoginSuccess}) {
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -26,7 +28,9 @@ function Login() {
             icon: "success",
             title: "Usuario logueado con éxito",
           });
-          formik.resetForm();
+          
+          onLoginSuccess(); // Llamada a la función para actualizar el estado global
+          formik.resetForm(); // Limpiamos el formulario
         }
       } catch (err) {
         const { field, message } = err.response.data; // Desestructuramos los campos 'field' y 'message' de la respuesta de error
@@ -62,48 +66,55 @@ function Login() {
   });
 
   return (
-    <form className={Styles.loginContainer} onSubmit={formik.handleSubmit}>
-      <h2>Iniciar Sesión</h2>
+    <div className={Styles.modalContainer}>
+      <form className={Styles.loginContainer} onSubmit={formik.handleSubmit}>
+        <h2>Iniciar Sesión</h2>
 
-      <div>
-        <label htmlFor="username">NOMBRE DE USUARIO:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="nombre de usuario"
-          onChange={formik.handleChange}
-          value={formik.values.username}
-        />
-        {formik.errors.username && <label className={Styles.errorMessage}>{formik.errors.username}</label>}
+        <div>
+          <label htmlFor="username">NOMBRE DE USUARIO:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="nombre de usuario"
+            onChange={formik.handleChange}
+            value={formik.values.username}
+          />
+          {formik.errors.username && <label className={Styles.errorMessage}>{formik.errors.username}</label>}
 
 
-        <label htmlFor="password">CONTRASEÑA:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="********"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-        />
-        {formik.errors.password && <label className={Styles.errorMessage}>{formik.errors.password}</label>}
+          <label htmlFor="password">CONTRASEÑA:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="********"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+          />
+          {formik.errors.password && <label className={Styles.errorMessage}>{formik.errors.password}</label>}
 
-        <button
-          type="submit"
-          disabled={Object.keys(formik.errors).length > 0 || !formik.dirty}
-          className={`${Styles.submitButton} ${
-            Object.keys(formik.errors).length > 0 || !formik.dirty ? "disabled" : ""
-          }`}
-        >
-          Iniciar Sesión
-        </button>
-        <a href="/register" className="link">
-          ¿No tienes una cuenta? Regístrate
-        </a>
-      </div>
-    </form>
+          <button
+            type="submit"
+            disabled={Object.keys(formik.errors).length > 0 || !formik.dirty}
+            className={`${Styles.submitButton} ${
+              Object.keys(formik.errors).length > 0 || !formik.dirty ? "disabled" : ""
+            }`}
+          >
+            Iniciar Sesión
+          </button>
+          <Link to="/register" className={Styles.link}>
+            ¿No tienes una cuenta? Regístrate
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 }
+
+// Definimos las PropTypes para validar las props del componente
+Login.propTypes = {
+  onLoginSuccess: PropTypes.func.isRequired, // Indicamos que es una función requerida
+};
 
 export default Login;

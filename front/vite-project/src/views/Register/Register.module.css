@@ -1,5 +1,5 @@
 /* Contenedor del formulario */
-.formContainer {
+/* .registerContainer {
     background-color: #fff;
     padding: 20px 30px;
     border-radius: 8px;
@@ -7,17 +7,49 @@
     max-width: 400px;
     width: 100%;
     margin: 0 33%;
-}
+} */
+
+/* Modal principal */
+.modalContainer {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semitransparente */
+    z-index: 999;
+  }
+  
+  /* Contenedor del formulario de registro */
+  .registerContainer {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    z-index: 1000; /* Más alto que el fondo de la modal */
+  }
+  
+  /* Efecto de desenfoque */
+  .blurBackground {
+    filter: blur(4px);
+    pointer-events: none; /* Evita la interacción con el contenido detrás */
+  }
+  
 
 /* Título del formulario */
-.formContainer h1 {
+.registerContainer h1 {
     text-align: center;
     margin-bottom: 20px;
     color: #333;
 }
 
 /* Estilos de las etiquetas */
-.formContainer label {
+.registerContainer label {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
@@ -25,11 +57,11 @@
 }
 
 /* Estilos de los campos */
-.formContainer input[type="text"],
-.formContainer input[type="email"],
-.formContainer input[type="password"],
-.formContainer input[type="number"],
-.formContainer input[type="date"] {
+.registerContainer input[type="text"],
+.registerContainer input[type="email"],
+.registerContainer input[type="password"],
+.registerContainer input[type="number"],
+.registerContainer input[type="date"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -39,14 +71,14 @@
     transition: border-color 0.3s;
 }
 
-.formContainer input:focus {
+.registerContainer input:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
 }
 
 /* Mensajes de error */
-.formContainer .errorMessage {
+.registerContainer .errorMessage {
     color: #d9534f;
     font-size: 12px;
     margin-top: -10px;
@@ -75,7 +107,7 @@
   }
   
 
-/* .formContainer button {
+/* .registerContainer button {
     width: 100%;
     padding: 12px;
     background-color: #007bff;
@@ -94,15 +126,15 @@
 
 /* Responsivo */
 @media (max-width: 768px) {
-    .formContainer {
+    .registerContainer {
         padding: 15px;
     }
 
-    .formContainer h1 {
+    .registerContainer h1 {
         font-size: 20px;
     }
 
-    .formContainer button {
+    .registerContainer button {
         font-size: 14px;
     }
 }

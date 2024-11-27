@@ -1,3 +1,36 @@
+/* Contenedor principal para centrar el formulario */
+.modalContainer {
+    position: fixed; /* Fija el formulario al viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semitransparente */
+    z-index: 999; /* Asegura que esté por encima del contenido */
+}
+
+/* Contenedor del formulario */
+.loginContainer {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    z-index: 1000; /* Más alto que el fondo de la modal */
+}
+
+/* Efecto de desenfoque para el fondo (opcional si usas CSS moderno) */
+.blurBackground {
+    filter: blur(4px); /* Aplica desenfoque */
+    pointer-events: none; /* Evita la interacción con el contenido detrás */
+}
+
+
 /* Contenedor del formulario */
 .loginContainer {
     background-color: #fff;
@@ -8,7 +41,9 @@
     width: 100%;
     text-align: center;
     margin: 0 35%;
+    z-index: 100%;
 }
+
 
 /* Título */
 .loginContainer h1 {

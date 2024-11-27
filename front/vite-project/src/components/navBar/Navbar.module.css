@@ -3,7 +3,7 @@
     justify-content: space-between; /* Logo a la izquierda, botones al centro, perfil a la derecha */
     align-items: center;
     margin: -0.5rem;
-    padding: 2rem 2rem 3rem; /* Espaciado interno */
+    padding: 1rem; /* Espaciado interno */
     background-color: #100707c0; /* Fondo oscuro */
     color: #fff; /* Texto claro */
     position: sticky; /* Navbar fija en la parte superior */
@@ -27,9 +27,9 @@
 }
 
 .logoImage {
-    width: 8rem;  /* Tamaño del logo */
+    width: 6rem;  /* Tamaño del logo */
     height: auto;
-    margin-right: 1.6rem;
+    margin-left: 2rem;
     transition: box-shadow 0.3s ease;
 
 }
@@ -37,7 +37,7 @@
 /* Contenedor de los botones */
 .navbarButtons {
     display: flex;
-    gap: 20px; /* Espaciado entre botones */
+    grid-template-rows: repeat(2, 1fr);
 }
 
 /* Botones de navegación */
@@ -45,8 +45,9 @@
     background-color: transparent;
     border: none;
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: bold;
+    text-decoration: none;
     cursor: pointer;
     transition: color 0.3s ease;
     margin: 0.5rem;
@@ -57,28 +58,40 @@
 }
 
 .navButton:hover {
-    color: #91d507; /* Color destacado al pasar el cursor */
-    border-radius: 2rem;
-    background-color: #910e7790;
+    color: #ffcc00;
+    background-color: rgba(14, 228, 53, 0.315);
+    border-radius: 1rem;
     transition: all 0.3s ease;
 }
 
 /* Perfil */
 .navPerfil {
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-decoration: none; /* Sin subrayado */
     transition: background-color 0.3s ease;
-    margin: 0.5rem;
-    padding: 0.5rem;
+    margin-right:  2rem;
     transition: color 0.3s ease;
 }
 
-.navPerfil:hover {
+.navPerfil h4 {
+    text-align: center;
+    color: azure;
+    margin-top: 0%;
+    
+}
+
+.navPerfil img:hover {
     color: #ffcc00;
-    background-color: transparent;
-    border-radius: 8rem;
-    background-color: #0e912890;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.781);
+    border-radius: 1.5rem;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.559);
+    transition: all 0.3s ease;
+
+}
+.navPerfil h4:hover {
+    color: #ffcc00;
+    background-color: rgba(14, 228, 53, 0.315);
+    border-radius: 1rem;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.559);
     transition: all 0.3s ease;
 
 }

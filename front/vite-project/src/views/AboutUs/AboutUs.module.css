@@ -1,0 +1,74 @@
+/* Contenedor General */
+.aboutContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: center;
+}
+
+/* Título */
+.title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #f3f8fa;
+    border-bottom: 2px solid #f0a500;
+    display: inline-block;
+    padding-bottom: 2px;
+}
+
+/* Contenido */
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.contentTextSection {
+    border-right: 2px solid #f0a500;
+    padding-right: 2rem;
+}
+
+/* Sección de texto */
+.textSection {
+    flex: 1 1 400px;
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.6;
+    background-color: #f9f9f9c3;
+    padding: 4rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 600px;
+    width: 100%;
+    color: #0e0e0e;
+    font-family: Arial, sans-serif;
+    
+}
+
+/* Sección de imágenes */
+.imagesSection {
+    flex: 1 1 400px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.image:hover {
+    transform: scale(1.05);
+}
