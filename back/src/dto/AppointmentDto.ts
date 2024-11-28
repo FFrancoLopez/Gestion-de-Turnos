@@ -1,7 +1,6 @@
 export interface AppointmentScheduleDto {
-    description: string,
     date : Date,
-    hour: string,
+    time: string,
     userId: number
 }
 

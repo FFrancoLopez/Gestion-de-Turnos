@@ -55,13 +55,12 @@ export const getAppointmentByIdService = async (id: number): Promise<Appointment
 
 
 
-// Creamos un turno y lo guardamos en la base de datos.
 export const createAppointmentService = async (appointmentDto: AppointmentScheduleDto): Promise<Appointment> => {
-  const { description, date, hour, userId } = appointmentDto;
+  const { date, time, userId } = appointmentDto;
 
   // Validamos datos de entrada
-  if (!description || !date || !hour || !userId) {
-    throw new Error('Faltan datos obligatorios para crear el turno.');
+  if (!date || !time || !userId) {
+    throw new Error("Faltan datos obligatorios para crear el turno.");
   }
 
   try {
@@ -71,11 +70,24 @@ export const createAppointmentService = async (appointmentDto: AppointmentSchedu
       throw new Error(`El usuario con ID ${userId} no existe.`);
     }
 
+    // Validación: Verificar si ya existe un turno en el mismo horario
+    const existingAppointment = await AppointmentModel.findOne({
+      where: {
+        user: { id: userId },
+        date,
+        time,
+        state: Status.Active, // Solo busca turnos activos
+      },
+    });
+
+    if (existingAppointment) {
+      throw new Error("Ya tienes un turno reservado en esta fecha y hora.");
+    }
+
     // Crear y guardar el turno
     const newAppointment = AppointmentModel.create({
-      description,
       date,
-      hour,
+      time,
       state: Status.Active,
       user,
     });
@@ -83,15 +95,12 @@ export const createAppointmentService = async (appointmentDto: AppointmentSchedu
 
   } catch (error) {
     if (error instanceof Error) {
-      // instanciamos para poder acceder a error.message
       throw new Error(error.message);
     } else {
-      // Si no es una instancia de Error, maneja el caso genérico
-      throw new Error('Ocurrió un error desconocido al intentar crear el turno.');
+      throw new Error("Ocurrió un error desconocido al intentar crear el turno.");
     }
   }
 };
-
 
 
 

@@ -7,14 +7,11 @@ export class Appointment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "varchar", length: 225, nullable: false })
-  description: string;
-
   @Column({ type: "date", nullable: false })
   date: Date;
 
   @Column({ type: "varchar", length: 5, nullable:false })
-  hour: string;
+  time: string;
 
   @Column({ type: "varchar", length: 10, nullable: false, default: Status.Active })
   state: Status;

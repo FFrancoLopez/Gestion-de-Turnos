@@ -43,38 +43,42 @@ export const getAppointmentById = async(req: Request <{id: string}>, res: Respon
   }
 };
 
-export const scheduleAppointment = async ( req: Request<unknown, unknown, AppointmentScheduleDto>, res: Response): Promise<void> => {
+export const scheduleAppointment = async (
+  req: Request<unknown, unknown, AppointmentScheduleDto>,
+  res: Response
+): Promise<void> => {
   try {
-    const { description, date, hour, userId } = req.body;
+    const { date, time, userId } = req.body;
 
-    // Validación inicial de datos
-    if ( !description || !date || !hour || !userId) {
-      res.status(400).json({ message: 'Faltan datos para agendar el turno.' });
+    if (!date || !time || !userId) {
+      res.status(400).json({ message: "Faltan datos para agendar el turno." });
       return;
     }
 
     // Llamar al servicio para crear el turno
     const appointment = await createAppointmentService(req.body);
-    res.status(201).json({ message: 'Turno creado exitosamente.', appointment });
+    res.status(201).json({ message: "Turno creado exitosamente.", appointment });
 
   } catch (error) {
-    // Manejar errores específicos
     const err = error as Error;
-    if (err.message.includes('usuario con ID')) {
-      res.status(404).json({ message: err.message });
-    } else if (err.message.includes('Faltan datos')) {
-      res.status(400).json({ message: err.message });
+
+    if (err.message.includes("Ya tienes un turno reservado")) {
+      res.status(400).json({ message: err.message }); // Turno duplicado
+    } else if (err.message.includes("usuario con ID")) {
+      res.status(404).json({ message: err.message }); // Usuario no encontrado
     } else {
-      // Errores generales del servidor
-      console.error('Error interno al agendar el turno:', error);
-      res.status(500).json({ message: 'No se pudo agendar el turno. Por favor, inténtelo más tarde.' });
+      console.error("Error interno al agendar el turno:", error);
+      res.status(500).json({
+        message: "No se pudo agendar el turno. Por favor, inténtelo más tarde.",
+      });
     }
   }
 };
 
+
 // CANCELACIÓN DE TURNO: Cambiamos el estado de un turno a “cancelled”.
 export const cancelAppointmentById = async ( req: Request<{ id: string }>, res: Response): Promise<void> => {
-  const appointmentId = parseInt(req.body.id); // Usar params en lugar de body para ID
+  const appointmentId = parseInt(req.params.id); // Usar params en lugar de body para ID
 
   if (!appointmentId) {    
 
