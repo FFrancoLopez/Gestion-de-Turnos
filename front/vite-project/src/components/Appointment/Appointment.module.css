@@ -58,20 +58,28 @@
 }
 
 /* Botón de cancelar */
+/* Estilo base del botón de cancelar */
 .cancelButton {
-    align-self: flex-end; /* Botón alineado a la derecha */
-    background-color: #f7061e; /* Rojo */
-    color: #fff;
+    background-color: #ff4d4d;
+    color: white;
     border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
     border-radius: 5px;
-    padding: 8px 12px;
-    cursor: not-allowed; /* Cursor desactivado por ahora */
-    opacity: 0.9; /* Aspecto desactivado */
-    transition: opacity 0.3s ease;
-    margin-top: 0.5rem;
-    width: fit-content;
-    font-size: 0.8rem;
-    text-align: center;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.781); 
-
+    transition: background-color 0.3s ease;
 }
+
+/* Estilo cuando el botón está deshabilitado */
+.cancelButton:disabled,
+.cancelButton.disabled {
+    background-color: #ddd; /* Gris claro cuando está deshabilitado */
+    cursor: not-allowed; /* Cambia el cursor para indicar que no se puede hacer clic */
+    color: #aaa; /* Texto gris para el botón deshabilitado */
+}
+
+/* Efecto hover cuando el botón no está deshabilitado */
+.cancelButton:not(:disabled):hover {
+    background-color: #ff3333; /* Un rojo más intenso al pasar el mouse */
+}
+

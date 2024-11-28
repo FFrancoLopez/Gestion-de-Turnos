@@ -1,24 +1,16 @@
 .navbarContainer {
     display: flex;
-    justify-content: space-between; /* Logo a la izquierda, botones al centro, perfil a la derecha */
+    justify-content: space-between;
     align-items: center;
-    margin: -0.5rem;
-    padding: 1rem; /* Espaciado interno */
-    background-color: #100707c0; /* Fondo oscuro */
-    color: #fff; /* Texto claro */
-    position: sticky; /* Navbar fija en la parte superior */
-    top: 0;
-    z-index: 1000; /* Asegura que la barra quede encima */
-}
-
-/* Estilo para el logo */
-/* .navbarLogo {
-    font-size: 20px;
-    font-weight: bold;
+    padding: 1rem 2rem;
+    background-color: rgba(10, 10, 10, 0.9); /* Fondo más elegante */
     color: #fff;
-    text-decoration: none;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Sombra */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
 }
-*/
 
 .navbarLogo {
     text-decoration: none;
@@ -27,71 +19,67 @@
 }
 
 .logoImage {
-    width: 6rem;  /* Tamaño del logo */
+    width: 5rem;
     height: auto;
-    margin-left: 2rem;
-    transition: box-shadow 0.3s ease;
-
+    margin-left: 1rem;
+    transition: transform 0.3s ease;
 }
 
-/* Contenedor de los botones */
+.logoImage:hover {
+    transform: scale(1.1); /* Efecto hover */
+}
+
 .navbarButtons {
     display: flex;
-    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem; /* Espaciado entre botones */
 }
 
-/* Botones de navegación */
 .navButton {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.1);
     border: none;
     color: #fff;
     font-size: 1rem;
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
-    transition: color 0.3s ease;
-    margin: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    box-shadow: 2px 4px 8px rgba(123, 47, 120, 0.781);
-    
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 2px 4px 8px rgba(123, 47, 120, 0.5);
 }
 
 .navButton:hover {
     color: #ffcc00;
-    background-color: rgba(14, 228, 53, 0.315);
-    border-radius: 1rem;
-    transition: all 0.3s ease;
+    background-color: rgba(14, 228, 53, 0.3);
 }
 
-/* Perfil */
-.navPerfil {
+
+/* mis turnos */
+.navAppoint {
     font-size: 1rem;
-    text-decoration: none; /* Sin subrayado */
-    transition: background-color 0.3s ease;
-    margin-right:  2rem;
+    text-decoration: none; 
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     transition: color 0.3s ease;
 }
 
-.navPerfil h4 {
-    text-align: center;
-    color: azure;
-    margin-top: 0%;
-    
+.imgAppoint{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.navPerfil img:hover {
-    color: #ffcc00;
-    border-radius: 1.5rem;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.559);
-    transition: all 0.3s ease;
-
+.imgAppoint:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
-.navPerfil h4:hover {
-    color: #ffcc00;
-    background-color: rgba(14, 228, 53, 0.315);
-    border-radius: 1rem;
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.559);
-    transition: all 0.3s ease;
 
+.navAppoint h4 {
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.navAppoint h4:hover {
+    color: #ffcc00;
 }

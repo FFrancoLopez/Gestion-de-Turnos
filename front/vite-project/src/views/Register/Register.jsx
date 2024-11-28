@@ -1,11 +1,17 @@
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
-import axios from "axios";
 import Styles from "./Register.module.css";
 import { registerFormValidates } from "../../helpers/registerFormValidates";
 import Swal from "sweetalert2";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { UsersContext } from "../../context/UsersContext";
 
 const Register = ({onRegisterSuccess}) => {
+
+  const { registerUser } = useContext(UsersContext);
+
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -26,7 +32,7 @@ const Register = ({onRegisterSuccess}) => {
     },
     onSubmit: async (values) => {
       try {
-        const res = await axios.post("http://localhost:3000/users/register", values);
+        const res = await registerUser(values);
         if (res.status === 201) {
           Swal.fire({
             icon: "success",
@@ -138,7 +144,10 @@ const Register = ({onRegisterSuccess}) => {
             }`}
           >
             Registrar
-          </button>
+          </button><br />
+          <Link to="/login" >
+            ¿Ya tienes una cuenta? Inicia sesión
+          </Link>
         </div>
       </form>
     </div>

@@ -1,28 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import Appointment from '../../components/Appointment/Appointment';
-import axios from 'axios';
 import Styles from './MyAppointments.module.css'
+import { UsersContext } from "../../context/UsersContext";
 
 function MyAppointments() {
 
-    const [appointments, setAppointments] = useState([]);
-
+    const { userAppointment, getUserAppointments, user } = useContext(UsersContext);
+ 
     useEffect(() => {
-        axios.get('http://localhost:3000/appointments')
+        const fetchAppointments = async () => {
+            if (user){
+                await getUserAppointments(user)
+            }
+        };
+        fetchAppointments() // Llamada a la función para obtener los turnos del usuario
 
-        .then((response) => {
-            setAppointments(response.data);
-        })
-
-        .catch((error) => {
-            console.log({message: "Error al obtener los turnos", error: error});
-        });
-
-    }, []);
-
-    useEffect(() => {
-        console.log({message: "useEffect", appointments: appointments});
-    }, [appointments]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     return(
         <div className={Styles.container}>
@@ -32,18 +26,18 @@ function MyAppointments() {
             </div>
 
             <div className={Styles.appointmentsGrid}>
-                { appointments.length > 0 ? appointments.map( (appoinment) => {
-                        return(
+                { userAppointment.length > 0 ? userAppointment.map( (appoinment) => {
+                       
+                       return(
                             <Appointment
                                 key={appoinment.id}
                                 id={appoinment.id}
-                                description={appoinment.description}
                                 date={appoinment.date}
-                                hour={appoinment.hour}
+                                time={appoinment.time}
                                 state={appoinment.state}
                             />
                         ) 
-                }) : <h3 className={Styles.textNotAppointments}>No hay turnos disponibles.😭</h3>}
+                }) : <h3 className={Styles.textNotAppointments}>No hay turnos disponibles...😭</h3>}
                 
             </div>
             

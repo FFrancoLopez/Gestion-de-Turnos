@@ -1,95 +1,94 @@
-import './App.module.css'
-import Home from './views/Home/Home'
-import MyAppointments from './views/MyAppointments/MyAppointments'
-import Register from './views/Register/Register'
-import Login from './views/Login/Login'
-import { Routes, Route, useNavigate } from 'react-router-dom'
-import Navbar from './components/navBar/Navbar'
-import Footer from './components/Footer/Footer'
-import AboutUs from './views/AboutUs/AboutUs'
-import { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
-
+import './App.module.css';
+import Home from './views/Home/Home';
+import MyAppointments from './views/MyAppointments/MyAppointments';
+import Register from './views/Register/Register';
+import Login from './views/Login/Login';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import Navbar from './components/navBar/Navbar';
+import Footer from './components/Footer/Footer';
+import AboutUs from './views/AboutUs/AboutUs';
+import { useContext, useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import { UsersContext } from './context/UsersContext';
+import ScheduleAppointment from './views/ScheduleAppointment/ScheduleAppointment';
 
 function App() {
-
-  const [isLogged, setIsLogged] = useState(false);
+  const { user } = useContext(UsersContext); // Usuario autenticado
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showRegisterModal, setShowRegisterModal] = useState(false); 
-
-  // const location = useLocation()
-  const navigate = useNavigate()
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Si el usuario no esta logiado, inicara un teporizador de 5seg que mostrara el login
-    if (!isLogged){
+    // Si el usuario no está autenticado, mostrar el modal de login tras 5 segundos
+    if (!user) {
       const timer = setTimeout(() => {
-        setShowLoginModal(true)
-      }, 5000)
+        setShowLoginModal(true);
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
-  }, [isLogged]);
+  }, [user]);
 
   const handleLoginSuccess = () => {
-    setIsLogged(true);
-    setShowLoginModal(false);
-    navigate('/'); // Redirige al usuario a la página de inicio
+    setShowLoginModal(false); // Cerrar modal de login
+    navigate('/'); // Redirigir al home
   };
 
   const handleShowRegister = () => {
-    setShowLoginModal(false); // Cerramos el modal de login
-    setShowRegisterModal(true); // Mostramos el modal de registro
+    setShowLoginModal(false); // Cerrar modal de login
+    setShowRegisterModal(true); // Mostrar modal de registro
   };
 
   const handleRegisterSuccess = () => {
-    setShowRegisterModal(false); // Cerramos el modal de registro
+    setShowRegisterModal(false); // Cerrar modal de registro
     Swal.fire({
       icon: 'success',
       title: 'Usuario registrado con éxito. Ahora puedes iniciar sesión.',
     });
-    navigate('/'); // Redirige al login
-    setShowLoginModal(true); // Mostramos el modal de login
-  }
-  
+    navigate('/login'); // Redirigir al login
+    setShowLoginModal(true); // Mostrar modal de login
+  };
+
   return (
     <>
-      {!isLogged && showLoginModal &&  (
-        <div className='modalContent'>
-          <Login onLoginSuccess={handleLoginSuccess} onShowRegister={handleShowRegister}/>
+       {/* Modales */}
+      {!user && showLoginModal && (
+        <div className="modalContent">
+          <Login onLoginSuccess={handleLoginSuccess} onShowRegister={handleShowRegister} />
         </div>
       )}
 
-      {!isLogged && showRegisterModal &&  (
-        <div className='modalContent'>
-          
-          <Register onRegisterSuccess={handleRegisterSuccess}/>
+      {!user && showRegisterModal && (
+        <div className="modalContent">
+          <Register onRegisterSuccess={handleRegisterSuccess} />
         </div>
       )}
 
-      {isLogged ? (
-        <>
-          <Navbar/>
-            <div className={!isLogged ? "blurBackground" : ""}>
-            <Routes>
-                <Route path='/' element={<Home/>}/>
-                <Route path='/about' element={<AboutUs/>}/>
-                <Route path='/myAppointments' element={<MyAppointments/>}/>
-              {/* <Route path='/userProfile' element={<UserProfile/>}/> */}
-            </Routes>
-            </div>
-          <Footer/>
-        </>
-      ) :(
+      
+      {user && <Navbar />}
+      <div className={!user ? 'blurBackground' : ''}>
         <Routes>
-          <Route path='/' element={<Home/>}/>
-          <Route path='/login' element={<Login onLoginSuccess={handleLoginSuccess}/>}/>
-          <Route path='/register' element={<Register onRegisterSuccess={handleRegisterSuccess}/>}/>
-        </Routes>
-      )}
+          {/* Rutas públicas */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/register" element={<Register onRegisterSuccess={handleRegisterSuccess} />} />
+          <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
 
+          {/* Rutas protegidas */}
+          {user ? (
+            <>
+              <Route path="/appointments/schedule" element={<ScheduleAppointment />} />
+              <Route path="/myAppointments" element={<MyAppointments />} />
+            </>
+          ) : (
+            // Redirigir a login si no hay usuario autenticado
+            <Route path="/appointments/*" element={<Navigate to="/login" replace />} />
+          )}
+        </Routes>
+      </div>
+      {user && <Footer />}
     </>
   );
 }
 
-export default App
+export default App;

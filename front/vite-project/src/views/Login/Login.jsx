@@ -1,12 +1,16 @@
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
 import Styles from "./Login.module.css";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { loginFormValidates } from "../../helpers/loginFormValidates";
 import { Link } from "react-router-dom";
+import { UsersContext } from "../../context/UsersContext";
+import { useContext } from "react";
 
 function Login({onLoginSuccess}) {
+
+  const { loginUser } = useContext(UsersContext);
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -22,7 +26,7 @@ function Login({onLoginSuccess}) {
 
     onSubmit: async (values) => {
       try {
-        const res = await axios.post("http://localhost:3000/users/login", values);
+        const res = await loginUser(values);
         if (res.status === 200) {
           Swal.fire({
             icon: "success",
